@@ -1,0 +1,129 @@
+generator client {
+  provider = "prisma-client-js"
+  engineType = "library"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  CITIZEN
+  HELPDESK
+  OFFICER
+  ADMIN
+}
+
+enum ServiceMode {
+  ONLINE
+  QUEUE
+  APPOINTMENT
+}
+
+enum QueueStatus {
+  WAITING
+  CALLING
+  PROCESSING
+  COMPLETED
+  REJECTED
+}
+
+enum AppointmentStatus {
+  SCHEDULED
+  COMPLETED
+  CANCELLED
+}
+
+enum RequestStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  REJECTED
+  FORWARDED
+}
+
+model User {
+  id                   String        @id @default(uuid())
+  name                 String
+  identificationNumber String?       @unique
+  phoneNumber          String        @unique
+  password             String
+  role                 Role          @default(CITIZEN)
+  queues               Queue[]
+  appointments         Appointment[]
+  requests             ServiceRequest[] @relation("CitizenRequests")
+  officerRequests      ServiceRequest[] @relation("OfficerProcesses")
+  officerQueues        Queue[]       @relation("OfficerQueues")
+  createdAt            DateTime      @default(now())
+  updatedAt            DateTime      @updatedAt
+}
+
+model ServiceSector {
+  id          String    @id @default(uuid())
+  name        String
+  description String?
+  icon        String?
+  services    Service[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Service {
+  id           String        @id @default(uuid())
+  name         String
+  description  String?
+  mode         ServiceMode
+  availability String?       // e.g., "Daily", "Mon-Fri"
+  icon         String?
+  sectorId     String
+  sector       ServiceSector @relation(fields: [sectorId], references: [id])
+  queues       Queue[]
+  appointments Appointment[]
+  requests     ServiceRequest[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Queue {
+  id           String      @id @default(uuid())
+  ticketNumber Int         // Sequential for the day/sector
+  status       QueueStatus @default(WAITING)
+  userId       String
+  user         User        @relation(fields: [userId], references: [id])
+  serviceId    String
+  service      Service     @relation(fields: [serviceId], references: [id])
+  officerId    String?
+  officer      User?       @relation("OfficerQueues", fields: [officerId], references: [id])
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  @@index([createdAt])
+}
+
+model Appointment {
+  id         String            @id @default(uuid())
+  date       DateTime
+  timeSlot   String            // e.g., "09:00 - 09:30"
+  status     AppointmentStatus @default(SCHEDULED)
+  userId     String
+  user       User              @relation(fields: [userId], references: [id])
+  serviceId  String
+  service    Service           @relation(fields: [serviceId], references: [id])
+  createdAt  DateTime          @default(now())
+  updatedAt  DateTime          @updatedAt
+}
+
+model ServiceRequest {
+  id           String        @id @default(uuid())
+  status       RequestStatus @default(PENDING)
+  data         Json?         // Form data for online services
+  remarks      String?
+  userId       String
+  user         User          @relation("CitizenRequests", fields: [userId], references: [id])
+  serviceId    String
+  service      Service       @relation(fields: [serviceId], references: [id])
+  officerId    String?
+  officer      User?         @relation("OfficerProcesses", fields: [officerId], references: [id])
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
