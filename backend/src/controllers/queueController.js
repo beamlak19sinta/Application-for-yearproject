@@ -41,6 +41,20 @@ const takeTicket = async (req, res) => {
             include: { service: true }
         });
 
+        // Create notification for user
+        const notificationModel = prisma.notification || prisma.notifications;
+        if (notificationModel) {
+            await notificationModel.create({
+                data: {
+                    userId,
+                    title: 'Queue Number Generated',
+                    message: `Your ticket number for ${queue.service.name} is ${ticketNumber}.`,
+                    type: 'QUEUE_ISSUED',
+                    relatedId: queue.id
+                }
+            });
+        }
+
         res.status(201).json(queue);
     } catch (error) {
         res.status(500).json({ message: 'Failed to take ticket', error: error.message });
@@ -97,8 +111,26 @@ const updateQueueStatus = async (req, res) => {
     try {
         const queue = await prisma.queue.update({
             where: { id: queueId },
-            data: { status, officerId }
+            data: { status, officerId },
+            include: { service: true }
         });
+
+        // Create notification if status is CALLING
+        if (status === 'CALLING') {
+            const notificationModel = prisma.notification || prisma.notifications;
+            if (notificationModel) {
+                await notificationModel.create({
+                    data: {
+                        userId: queue.userId,
+                        title: 'Your Turn!',
+                        message: `Please proceed to the counter for ${queue.service.name}.`,
+                        type: 'QUEUE_CALLED',
+                        relatedId: queue.id
+                    }
+                });
+            }
+        }
+
         res.json(queue);
     } catch (error) {
         res.status(500).json({ message: 'Failed to update queue status', error: error.message });

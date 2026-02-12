@@ -3,13 +3,21 @@ const prisma = require('../utils/prisma');
 const getNotifications = async (req, res) => {
     const userId = req.user.id;
 
+    // Fallback logic for Prisma model naming discrepancies
+    const notificationModel = prisma.notification || prisma.notifications;
+
+    if (!notificationModel) {
+        console.error('ERROR: Prisma Notification model not found in client. Available models:', Object.keys(prisma));
+        return res.status(500).json({ message: 'Configuration error: Notification model not found' });
+    }
+
     try {
-        const notifications = await prisma.notification.findMany({
+        const notifications = await notificationModel.findMany({
             where: { userId },
             orderBy: { createdAt: 'desc' }
         });
 
-        const unreadCount = await prisma.notification.count({
+        const unreadCount = await notificationModel.count({
             where: { userId, isRead: false }
         });
 
@@ -27,9 +35,10 @@ const getNotifications = async (req, res) => {
 const markAsRead = async (req, res) => {
     const { notificationId } = req.params;
     const userId = req.user.id;
+    const notificationModel = prisma.notification || prisma.notifications;
 
     try {
-        const notification = await prisma.notification.updateMany({
+        const notification = await notificationModel.updateMany({
             where: { id: notificationId, userId },
             data: { isRead: true }
         });

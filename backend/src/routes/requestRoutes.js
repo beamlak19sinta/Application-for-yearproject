@@ -7,5 +7,6 @@ router.post('/submit', authenticateToken, requestController.submitRequest);
 router.get('/my-requests', authenticateToken, requestController.getMyRequests);
 router.get('/sector/:sectorId', authenticateToken, requestController.getSectorRequests);
 router.patch('/status/:requestId', authenticateToken, requestController.updateRequestStatus);
+router.get('/:requestId', authenticateToken, requestController.getRequestById);
 
 module.exports = router;

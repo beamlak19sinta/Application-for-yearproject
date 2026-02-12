@@ -69,4 +69,19 @@ const getMyRequests = async (req, res) => {
     }
 };
 
-module.exports = { submitRequest, getSectorRequests, updateRequestStatus, getMyRequests };
+const getRequestById = async (req, res) => {
+    const { requestId } = req.params;
+    const userId = req.user.id;
+    try {
+        const request = await prisma.serviceRequest.findFirst({
+            where: { id: requestId },
+            include: { user: true, service: { include: { sector: true } } }
+        });
+        if (!request) return res.status(404).json({ message: 'Request not found' });
+        res.json({ success: true, data: request });
+    } catch (error) {
+        res.status(500).json({ message: 'Failed to fetch request', error: error.message });
+    }
+};
+
+module.exports = { submitRequest, getSectorRequests, updateRequestStatus, getMyRequests, getRequestById };

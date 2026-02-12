@@ -9,5 +9,7 @@ router.use(authorizeRoles('ADMIN'));
 router.get('/stats', adminController.getStats);
 router.get('/users', adminController.getUsers);
 router.get('/logs', adminController.getLogs);
+router.patch('/users/:id/role', adminController.updateUserRole);
+router.delete('/users/:id', adminController.deleteUser);
 
 module.exports = router;

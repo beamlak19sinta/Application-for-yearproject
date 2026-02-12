@@ -30,6 +30,20 @@ const bookAppointment = async (req, res) => {
             include: { service: true }
         });
 
+        // Create notification for user
+        const notificationModel = prisma.notification || prisma.notifications;
+        if (notificationModel) {
+            await notificationModel.create({
+                data: {
+                    userId,
+                    title: 'Appointment Confirmed',
+                    message: `Your appointment for ${appointment.service.name} is scheduled for ${new Date(bookingDate).toLocaleDateString()} at ${timeSlot}.`,
+                    type: 'APPOINTMENT_CONFIRMED',
+                    relatedId: appointment.id
+                }
+            });
+        }
+
         res.status(201).json(appointment);
     } catch (error) {
         res.status(500).json({ message: 'Failed to book appointment', error: error.message });
