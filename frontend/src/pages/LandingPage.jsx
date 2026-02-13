@@ -116,36 +116,12 @@ export default function LandingPage() {
                         </div>
 
                         <div className="lg:w-1/2 relative group">
-                            <div className="relative z-10 bg-card/50 backdrop-blur-sm rounded-[40px] shadow-2xl p-4 border border-border group-hover:scale-[1.02] transition-transform duration-500">
-                                <div className="bg-foreground/5 rounded-[32px] aspect-square lg:aspect-[4/3] flex items-center justify-center overflow-hidden">
-                                    <div className="grid grid-cols-2 gap-4 w-full h-full p-8">
-                                        <div className="bg-background rounded-3xl p-5 shadow-sm border border-border flex flex-col justify-between">
-                                            <div className="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center">
-                                                <LayoutList className="text-primary w-4 h-4" />
-                                            </div>
-                                            <div className="space-y-2">
-                                                <div className="h-3 w-3/4 bg-muted rounded" />
-                                                <div className="h-1.5 w-full bg-muted/50 rounded" />
-                                            </div>
-                                        </div>
-                                        <div className="bg-background rounded-3xl p-5 shadow-sm border border-border flex flex-col justify-between">
-                                            <div className="w-8 h-8 bg-accent/20 rounded-xl flex items-center justify-center">
-                                                <CalendarCheck className="text-accent-foreground w-4 h-4" />
-                                            </div>
-                                            <div className="space-y-2">
-                                                <div className="h-3 w-3/4 bg-muted rounded" />
-                                                <div className="h-1.5 w-full bg-muted/50 rounded" />
-                                            </div>
-                                        </div>
-                                        <div className="bg-primary rounded-3xl p-6 col-span-2 flex items-center justify-between text-primary-foreground">
-                                            <div className="space-y-3">
-                                                <div className="h-3 w-24 bg-primary-foreground/30 rounded" />
-                                                <div className="text-3xl font-black">#042</div>
-                                            </div>
-                                            <div className="w-16 h-16 bg-background/20 rounded-full animate-pulse border-4 border-background/10" />
-                                        </div>
-                                    </div>
-                                </div>
+                            <div className="relative z-10 bg-card/50 backdrop-blur-sm rounded-[40px] shadow-2xl p-4 border border-border group-hover:scale-[1.02] transition-transform duration-500 overflow-hidden">
+                                <img
+                                    src="/hero_image.png"
+                                    alt="Dagmawi Menelik Digital Service"
+                                    className="w-full h-auto rounded-[32px] object-cover"
+                                />
                             </div>
                         </div>
                     </div>
@@ -216,7 +192,7 @@ export default function LandingPage() {
                 <div className="container mx-auto">
                     <div className="text-center max-w-2xl mx-auto mb-20 space-y-4">
                         <h2 className="text-primary font-black uppercase tracking-[0.25em] text-sm">{t.processTitle}</h2>
-                        <h3 className="text-4xl lg:text-5xl font-bold tracking-tight">Efficient service in three simple steps</h3>
+                        <h3 className="text-4xl lg:text-5xl font-bold tracking-tight">{t.processSubtitle}</h3>
                     </div>
                     <div className="grid md:grid-cols-3 gap-16 relative">
                         <div className="hidden lg:block absolute top-[2.5rem] left-[10%] right-[10%] h-px bg-border z-0" />
@@ -230,7 +206,7 @@ export default function LandingPage() {
                                     <item.icon className="w-10 h-10 text-primary" />
                                 </div>
                                 <div className="space-y-2">
-                                    <div className="text-sm font-black text-primary mb-1 uppercase tracking-wider">STEP {item.step}</div>
+                                    <div className="text-sm font-black text-primary mb-1 uppercase tracking-wider">{t.processStepLabel} {item.step}</div>
                                     <h4 className="text-2xl font-bold tracking-tight">{item.title}</h4>
                                     <p className="text-muted-foreground leading-relaxed text-base">{item.desc}</p>
                                 </div>
@@ -242,7 +218,7 @@ export default function LandingPage() {
 
             {/* Footer */}
             <footer className="pt-24 px-4 bg-background">
-                <div className="container mx-auto bg-foreground text-background rounded-t-[60px] p-12 lg:p-20 relative overflow-hidden">
+                <div className="container mx-auto bg-[#0f172a] text-white rounded-t-[60px] p-12 lg:p-20 relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-[120px]" />
                     <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent/10 rounded-full blur-[120px]" />
                     <div className="relative z-10">
@@ -254,47 +230,44 @@ export default function LandingPage() {
                                     </div>
                                     <span className="text-2xl font-black tracking-tight uppercase">Dagmawi Menelik</span>
                                 </div>
-                                <p className="text-background/60 text-lg leading-relaxed max-w-md italic">{t.footerSlogan}</p>
+                                <p className="text-white/60 text-lg leading-relaxed max-w-md italic">{t.footerSlogan}</p>
                                 <div className="flex gap-4">
                                     {[Facebook, Twitter, Linkedin].map((Icon, i) => (
-                                        <button key={i} className="w-10 h-10 bg-background/5 rounded-2xl flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all duration-300 border border-background/10">
+                                        <button key={i} className="w-10 h-10 bg-white/5 rounded-2xl flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all duration-300 border border-white/10">
                                             <Icon className="w-5 h-5" />
                                         </button>
                                     ))}
                                 </div>
                             </div>
-
                             <div className="lg:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-12">
                                 <div className="space-y-6">
                                     <h4 className="font-black uppercase text-xs tracking-widest text-primary">{lang === 'en' ? 'Quick Links' : 'አቋራጭ ሊንኮች'}</h4>
-                                    <ul className="space-y-4 text-sm font-semibold text-background/60">
+                                    <ul className="space-y-4 text-sm font-semibold text-white/60">
                                         <li><a href="#" className="hover:text-primary transition-colors">{t.navServices}</a></li>
                                         <li><a href="#" className="hover:text-primary transition-colors">{t.navAbout}</a></li>
                                         <li><a href="#" className="hover:text-primary transition-colors">{lang === 'en' ? 'Latest News' : 'ወቅታዊ መረጃዎች'}</a></li>
                                         <li><a href="#" className="hover:text-primary transition-colors">{lang === 'en' ? 'Office Map' : 'ቢሮ አድራሻ'}</a></li>
                                     </ul>
                                 </div>
-
                                 <div className="space-y-6">
                                     <h4 className="font-black uppercase text-xs tracking-widest text-primary">{lang === 'en' ? 'Support' : 'እገዛ'}</h4>
-                                    <ul className="space-y-4 text-sm font-semibold text-background/60">
+                                    <ul className="space-y-4 text-sm font-semibold text-white/60">
                                         <li className="flex items-start gap-3"><Phone className="w-4 h-4 text-primary shrink-0" /> +251 58 220 XXXX</li>
                                         <li className="flex items-start gap-3"><Mail className="w-4 h-4 text-primary shrink-0" /> info@dms.gov.et</li>
                                         <li className="flex items-start gap-3"><MapPin className="w-4 h-4 text-primary shrink-0" /> Bahir Dar, Ethiopia</li>
                                     </ul>
                                 </div>
-
                                 <div className="space-y-6 col-span-2 sm:col-span-1">
                                     <h4 className="font-black uppercase text-xs tracking-widest text-primary">{lang === 'en' ? 'Office Hours' : 'የስራ ሰዓት'}</h4>
-                                    <div className="p-6 bg-background/5 rounded-2xl border border-background/10 space-y-3">
+                                    <div className="p-6 bg-white/5 rounded-2xl border border-white/10 space-y-3">
                                         <div>
-                                            <div className="text-[10px] font-bold text-background/40 uppercase mb-1">{lang === 'en' ? 'Weekdays' : 'የስራ ቀናት'}</div>
-                                            <div className="font-black text-background">8:30 AM - 5:30 PM</div>
+                                            <div className="text-[10px] font-bold text-white/40 uppercase mb-1">{lang === 'en' ? 'Weekdays' : 'የስራ ቀናት'}</div>
+                                            <div className="font-black text-white">8:30 AM - 5:30 PM</div>
                                         </div>
-                                        <div className="h-px bg-background/10" />
+                                        <div className="h-px bg-white/10" />
                                         <div>
-                                            <div className="text-[10px] font-bold text-background/40 uppercase mb-1">{lang === 'en' ? 'Saturday' : 'ቅዳሜ'}</div>
-                                            <div className="font-black text-background">9:00 AM - 12:00 PM</div>
+                                            <div className="text-[10px] font-bold text-white/40 uppercase mb-1">{lang === 'en' ? 'Saturday' : 'ቅዳሜ'}</div>
+                                            <div className="font-black text-white">9:00 AM - 12:00 PM</div>
                                         </div>
                                     </div>
                                 </div>

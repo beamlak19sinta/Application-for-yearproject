@@ -84,3 +84,6 @@ This project uses **Prisma v7**, which requires specific configurations for stab
 
 ## 📄 License
 MIT License - Created for the Dagmawi Menelik Digital Service initiative.
+Admin: 0911111111 / admin123
+Officer: 0900000000 / officer123
+Citizen: 0909090909 / password123
