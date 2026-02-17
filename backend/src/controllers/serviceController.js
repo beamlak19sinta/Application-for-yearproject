@@ -65,11 +65,36 @@ const updateSector = async (req, res) => {
 const deleteSector = async (req, res) => {
     const { id } = req.params;
     try {
-        const sector = await prisma.serviceSector.findUnique({ where: { id } });
-        await prisma.serviceSector.delete({ where: { id } });
+        const sector = await prisma.serviceSector.findUnique({
+            where: { id },
+            include: { services: true }
+        });
+
+        if (!sector) {
+            return res.status(404).json({ message: 'Sector not found' });
+        }
+
+        const serviceIds = sector.services.map(s => s.id);
+
+        await prisma.$transaction(async (tx) => {
+            if (serviceIds.length > 0) {
+                // Delete related records for all services in this sector
+                await tx.queue.deleteMany({ where: { serviceId: { in: serviceIds } } });
+                await tx.appointment.deleteMany({ where: { serviceId: { in: serviceIds } } });
+                await tx.serviceRequest.deleteMany({ where: { serviceId: { in: serviceIds } } });
+
+                // Delete all services in this sector
+                await tx.service.deleteMany({ where: { sectorId: id } });
+            }
+
+            // Finally delete the sector
+            await tx.serviceSector.delete({ where: { id } });
+        });
+
         await logAction(req.user.id, 'DELETE_SECTOR', `Deleted sector: ${sector.name}`);
-        res.json({ message: 'Sector deleted' });
+        res.json({ message: 'Sector and related services deleted' });
     } catch (error) {
+        console.error('Failed to delete sector:', error);
         res.status(500).json({ message: 'Failed to delete sector', error: error.message });
     }
 };
@@ -93,10 +118,25 @@ const deleteService = async (req, res) => {
     const { id } = req.params;
     try {
         const service = await prisma.service.findUnique({ where: { id } });
-        await prisma.service.delete({ where: { id } });
+
+        if (!service) {
+            return res.status(404).json({ message: 'Service not found' });
+        }
+
+        await prisma.$transaction(async (tx) => {
+            // Delete related records for this service
+            await tx.queue.deleteMany({ where: { serviceId: id } });
+            await tx.appointment.deleteMany({ where: { serviceId: id } });
+            await tx.serviceRequest.deleteMany({ where: { serviceId: id } });
+
+            // Delete the service
+            await tx.service.delete({ where: { id } });
+        });
+
         await logAction(req.user.id, 'DELETE_SERVICE', `Deleted service: ${service.name}`);
         res.json({ message: 'Service deleted' });
     } catch (error) {
+        console.error('Failed to delete service:', error);
         res.status(500).json({ message: 'Failed to delete service', error: error.message });
     }
 };

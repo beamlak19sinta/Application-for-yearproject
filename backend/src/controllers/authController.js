@@ -119,7 +119,19 @@ const changePassword = async (req, res) => {
     try {
         const user = await prisma.user.findUnique({ where: { id: userId } });
 
+        const fs = require('fs');
+        const debugData = {
+            timestamp: new Date().toISOString(),
+            userId,
+            providedPasswordLen: currentPassword?.length,
+            storedHashPrefix: user.password?.substring(0, 10),
+            matchProv: currentPassword === user.password // Just in case it was stored plain?
+        };
+        fs.appendFileSync('/tmp/auth_debug.log', JSON.stringify(debugData, null, 2) + '\n');
+
         const isMatch = await bcrypt.compare(currentPassword, user.password);
+        fs.appendFileSync('/tmp/auth_debug.log', `Bcrypt Match result: ${isMatch}\n`);
+
         if (!isMatch) {
             return res.status(400).json({ message: 'Incorrect current password' });
         }

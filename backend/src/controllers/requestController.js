@@ -26,8 +26,7 @@ const getSectorRequests = async (req, res) => {
     try {
         const requests = await prisma.serviceRequest.findMany({
             where: {
-                service: { sectorId },
-                status: { notIn: ['COMPLETED', 'REJECTED'] }
+                service: { sectorId }
             },
             include: { user: true, service: true },
             orderBy: { createdAt: 'desc' }
@@ -35,6 +34,23 @@ const getSectorRequests = async (req, res) => {
         res.json(requests);
     } catch (error) {
         res.status(500).json({ message: 'Failed to fetch sector requests', error: error.message });
+    }
+};
+
+const getRequestHistory = async (req, res) => {
+    const { sectorId } = req.params;
+    try {
+        const requests = await prisma.serviceRequest.findMany({
+            where: {
+                service: { sectorId },
+                status: { in: ['COMPLETED', 'REJECTED'] }
+            },
+            include: { user: true, service: true },
+            orderBy: { updatedAt: 'desc' }
+        });
+        res.json(requests);
+    } catch (error) {
+        res.status(500).json({ message: 'Failed to fetch request history', error: error.message });
     }
 };
 
@@ -84,4 +100,4 @@ const getRequestById = async (req, res) => {
     }
 };
 
-module.exports = { submitRequest, getSectorRequests, updateRequestStatus, getMyRequests, getRequestById };
+module.exports = { submitRequest, getSectorRequests, updateRequestStatus, getMyRequests, getRequestById, getRequestHistory };

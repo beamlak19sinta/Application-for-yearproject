@@ -190,5 +190,52 @@ const cancelAppointment = async (req, res) => {
     }
 };
 
-module.exports = { bookAppointment, getMyAppointments, getAvailableSlots, getSectorAppointments, getAvailableSlotsQuery, cancelAppointment };
+const updateAppointmentStatus = async (req, res) => {
+    const { appointmentId } = req.params;
+    const { status } = req.body;
+
+    try {
+        const appointment = await prisma.appointment.update({
+            where: { id: appointmentId },
+            data: { status },
+            include: { service: true, user: true }
+        });
+
+        // Notify user if status changed to COMPLETED or CANCELLED
+        const notificationModel = prisma.notification || prisma.notifications;
+        if (notificationModel) {
+            await notificationModel.create({
+                data: {
+                    userId: appointment.userId,
+                    title: `Appointment ${status === 'COMPLETED' ? 'Completed' : 'Cancelled'}`,
+                    message: `Your appointment for ${appointment.service.name} has been marked as ${status.toLowerCase()}.`,
+                    type: status === 'COMPLETED' ? 'APPOINTMENT_COMPLETED' : 'APPOINTMENT_CANCELLED',
+                    relatedId: appointment.id
+                }
+            });
+        }
+
+        res.json({
+            success: true,
+            message: `Appointment status updated to ${status}`,
+            data: appointment
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Failed to update appointment status',
+            error: error.message
+        });
+    }
+};
+
+module.exports = {
+    bookAppointment,
+    getMyAppointments,
+    getAvailableSlots,
+    getSectorAppointments,
+    getAvailableSlotsQuery,
+    cancelAppointment,
+    updateAppointmentStatus
+};
 

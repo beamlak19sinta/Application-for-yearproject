@@ -217,11 +217,11 @@ export default function LandingPage() {
             </section>
 
             {/* Footer */}
-            <footer className="pt-24 px-4 bg-background">
-                <div className="container mx-auto bg-[#0f172a] text-white rounded-t-[60px] p-12 lg:p-20 relative overflow-hidden">
+            <footer className="pt-24 bg-background">
+                <div className="w-full bg-[#0f172a] text-white relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-[120px]" />
                     <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent/10 rounded-full blur-[120px]" />
-                    <div className="relative z-10">
+                    <div className="container mx-auto px-6 p-12 lg:p-20 relative z-10">
                         <div className="grid lg:grid-cols-12 gap-16 lg:gap-24">
                             <div className="lg:col-span-5 space-y-8">
                                 <div className="flex items-center gap-3">

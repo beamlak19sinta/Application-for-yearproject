@@ -14,5 +14,6 @@ router.post('/', authenticateToken, appointmentController.bookAppointment); // A
 router.get('/my', authenticateToken, appointmentController.getMyAppointments); // Alias for /my-appointments
 router.get('/slots', authenticateToken, appointmentController.getAvailableSlotsQuery); // Query param version
 router.delete('/:appointmentId', authenticateToken, appointmentController.cancelAppointment); // New endpoint
+router.patch('/status/:appointmentId', authenticateToken, appointmentController.updateAppointmentStatus);
 
 module.exports = router;

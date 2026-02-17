@@ -92,13 +92,13 @@ const Sidebar = React.forwardRef(
         },
         ref
     ) => {
-        const { state, open } = useSidebar()
+        const { state } = useSidebar()
 
         if (collapsible === "none") {
             return (
                 <div
                     className={cn(
-                        "flex h-full w-[--sidebar-width] flex-col bg-sidebar text-sidebar-foreground",
+                        "flex h-full w-sidebar-width flex-col bg-sidebar text-sidebar-foreground",
                         className
                     )}
                     ref={ref}
@@ -110,45 +110,24 @@ const Sidebar = React.forwardRef(
         }
 
         return (
-            <div
+            <aside
                 ref={ref}
-                className="group peer hidden md:block text-sidebar-foreground"
+                className={cn(
+                    "group peer flex flex-col h-screen bg-sidebar text-sidebar-foreground shrink-0 transition-all duration-200 ease-linear border-r border-sidebar-border",
+                    "w-sidebar-width data-[state=collapsed]:w-sidebar-width-icon",
+                    "hidden md:flex",
+                    variant === "floating" && "m-2 rounded-lg border shadow",
+                    variant === "inset" && "m-2 rounded-2xl border shadow-xl",
+                    className
+                )}
                 data-state={state}
                 data-collapsible={state === "collapsed" ? collapsible : ""}
                 data-variant={variant}
                 data-side={side}
+                {...props}
             >
-                <div
-                    className={cn(
-                        "duration-200 relative h-svh w-[--sidebar-width] bg-transparent transition-[width] ease-linear",
-                        "group-data-[collapsible=offcanvas]:w-0",
-                        "group-data-[side=right]:rotate-180",
-                        variant === "floating" || variant === "inset"
-                            ? "group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)_+_theme(spacing.4))]"
-                            : "group-data-[collapsible=icon]:w-[--sidebar-width-icon]"
-                    )}
-                />
-                <div
-                    className={cn(
-                        "duration-200 fixed inset-y-0 z-10 hidden h-svh w-[--sidebar-width] transition-[left,right,width] ease-linear md:flex",
-                        side === "left"
-                            ? "left-0 group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)]"
-                            : "right-0 group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)]",
-                        variant === "floating" || variant === "inset"
-                            ? "p-2 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)_+_theme(spacing.4)_+_2px)]"
-                            : "group-data-[collapsible=icon]:w-[--sidebar-width-icon] group-data-[side=left]:border-r group-data-[side=right]:border-l",
-                        className
-                    )}
-                    {...props}
-                >
-                    <div
-                        data-sidebar="sidebar"
-                        className="flex h-full w-full flex-col bg-sidebar group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:border-sidebar-border group-data-[variant=floating]:shadow"
-                    >
-                        {children}
-                    </div>
-                </div>
-            </div>
+                {children}
+            </aside>
         )
     }
 )
@@ -288,6 +267,20 @@ const SidebarMenuButton = React.forwardRef(
 )
 SidebarMenuButton.displayName = "SidebarMenuButton"
 
+const SidebarInset = React.forwardRef(({ className, ...props }, ref) => {
+    return (
+        <main
+            ref={ref}
+            className={cn(
+                "flex flex-1 flex-col min-h-screen bg-background",
+                className
+            )}
+            {...props}
+        />
+    )
+})
+SidebarInset.displayName = "SidebarInset"
+
 export {
     Sidebar,
     SidebarContent,
@@ -300,5 +293,6 @@ export {
     SidebarMenuItem,
     SidebarProvider,
     SidebarTrigger,
+    SidebarInset,
     useSidebar,
 }

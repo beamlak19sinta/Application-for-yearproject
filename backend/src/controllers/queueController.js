@@ -103,15 +103,35 @@ const getQueueList = async (req, res) => {
     }
 };
 
+const getQueueHistory = async (req, res) => {
+    const { sectorId } = req.params;
+    try {
+        const queues = await prisma.queue.findMany({
+            where: {
+                service: { sectorId },
+                status: { in: ['COMPLETED', 'REJECTED'] }
+            },
+            include: { user: true, service: true },
+            orderBy: { updatedAt: 'desc' }
+        });
+        res.json(queues);
+    } catch (error) {
+        res.status(500).json({ message: 'Failed to fetch queue history', error: error.message });
+    }
+};
+
 const updateQueueStatus = async (req, res) => {
     const { queueId } = req.params;
-    const { status } = req.body;
+    const { status, remarks } = req.body;
     const officerId = req.user.id;
 
     try {
+        const updateData = { status, officerId };
+        if (remarks !== undefined) updateData.remarks = remarks;
+
         const queue = await prisma.queue.update({
             where: { id: queueId },
-            data: { status, officerId },
+            data: updateData,
             include: { service: true }
         });
 
@@ -134,6 +154,46 @@ const updateQueueStatus = async (req, res) => {
         res.json(queue);
     } catch (error) {
         res.status(500).json({ message: 'Failed to update queue status', error: error.message });
+    }
+};
+
+const forwardTicket = async (req, res) => {
+    const { queueId } = req.params;
+    const { targetSectorId, remarks } = req.body;
+    const officerId = req.user.id;
+
+    try {
+        const queue = await prisma.queue.findUnique({
+            where: { id: queueId },
+            include: { service: true }
+        });
+
+        if (!queue) {
+            return res.status(404).json({ message: 'Ticket not found' });
+        }
+
+        // Find a service in the target sector to assign the ticket to
+        const targetService = await prisma.service.findFirst({
+            where: { sectorId: targetSectorId }
+        });
+
+        if (!targetService) {
+            return res.status(400).json({ message: 'Target sector has no services' });
+        }
+
+        const updatedQueue = await prisma.queue.update({
+            where: { id: queueId },
+            data: {
+                serviceId: targetService.id,
+                status: 'WAITING',
+                officerId: null, // Reset officer so someone in the new sector can pick it up
+                remarks: remarks || `Forwarded from ${queue.service.name}`
+            }
+        });
+
+        res.json(updatedQueue);
+    } catch (error) {
+        res.status(500).json({ message: 'Failed to forward ticket', error: error.message });
     }
 };
 
@@ -274,5 +334,5 @@ const getQueueById = async (req, res) => {
     }
 };
 
-module.exports = { takeTicket, getMyQueueStatus, getQueueList, updateQueueStatus, registerWalkIn, cancelTicket, getMyQueueHistory, getQueueById };
+module.exports = { takeTicket, getMyQueueStatus, getQueueList, updateQueueStatus, registerWalkIn, cancelTicket, getMyQueueHistory, getQueueById, getQueueHistory, forwardTicket };
 

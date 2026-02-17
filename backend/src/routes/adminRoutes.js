@@ -10,6 +10,11 @@ router.get('/stats', adminController.getStats);
 router.get('/users', adminController.getUsers);
 router.get('/logs', adminController.getLogs);
 router.patch('/users/:id/role', adminController.updateUserRole);
+router.patch('/users/:id', adminController.updateUser);
 router.delete('/users/:id', adminController.deleteUser);
+
+// Settings
+router.get('/settings', adminController.getSettings);
+router.patch('/settings', adminController.updateSettings);
 
 module.exports = router;

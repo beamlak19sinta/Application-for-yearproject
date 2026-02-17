@@ -54,4 +54,42 @@ const markAsRead = async (req, res) => {
     }
 };
 
-module.exports = { getNotifications, markAsRead };
+const markAllAsRead = async (req, res) => {
+    const userId = req.user.id;
+    const notificationModel = prisma.notification || prisma.notifications;
+
+    try {
+        await notificationModel.updateMany({
+            where: { userId, isRead: false },
+            data: { isRead: true }
+        });
+
+        res.json({ message: 'All notifications marked as read' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Failed to update notifications', error: error.message });
+    }
+};
+
+const deleteNotification = async (req, res) => {
+    const { notificationId } = req.params;
+    const userId = req.user.id;
+    const notificationModel = prisma.notification || prisma.notifications;
+
+    try {
+        const result = await notificationModel.deleteMany({
+            where: { id: notificationId, userId }
+        });
+
+        if (result.count === 0) {
+            return res.status(404).json({ message: 'Notification not found' });
+        }
+
+        res.json({ message: 'Notification deleted' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Failed to delete notification', error: error.message });
+    }
+};
+
+module.exports = { getNotifications, markAsRead, markAllAsRead, deleteNotification };
