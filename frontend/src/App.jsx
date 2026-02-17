@@ -40,12 +40,16 @@ import ServiceManagement from './pages/admin/ServiceManagement';
 import Reports from './pages/admin/Reports';
 import Settings from './pages/admin/Settings';
 
+import PublicLayout from './layouts/PublicLayout';
+
 function AppRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<LandingPage />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
+      <Route element={<PublicLayout />}>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+      </Route>
 
       {/* Citizen Dashboard Routes */}
       <Route

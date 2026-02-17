@@ -37,23 +37,13 @@ export default function Login() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-background p-6">
-            <div className="absolute top-8 left-8">
-                <Link to="/">
-                    <Button variant="ghost" className="gap-2">
-                        <ArrowLeft className="w-4 h-4" /> Back to Home
-                    </Button>
-                </Link>
-            </div>
-
+        <div className="min-h-screen flex items-center justify-center p-6 pt-32">
             <Card className="w-full max-w-md rounded-[32px] border-border shadow-2xl overflow-hidden">
                 <div className="bg-primary p-8 text-primary-foreground flex flex-col items-center gap-4">
-                    <div className="w-16 h-16 bg-background/20 rounded-2xl flex items-center justify-center">
-                        <Building2 className="w-8 h-8" />
-                    </div>
+                    <img src="/logo.png" alt="Logo" className="w-16 h-16 object-contain" />
                     <div className="text-center">
-                        <CardTitle className="text-2xl font-black uppercase tracking-tight">Dagmawi Menelik</CardTitle>
-                        <CardDescription className="text-primary-foreground/70 font-bold">Portal Access</CardDescription>
+                        <CardTitle className="text-2xl font-black uppercase tracking-tight text-white">Dagmawi Menelik</CardTitle>
+                        <CardDescription className="text-white/70 font-bold">Portal Access</CardDescription>
                     </div>
                 </div>
 
@@ -66,7 +56,7 @@ export default function Login() {
                         )}
 
                         <div className="space-y-2">
-                            <label className="text-sm font-bold text-muted-foreground uppercase tracking-wider">Phone Number</label>
+                            <label className="text-sm font-bold text-foreground/80 uppercase tracking-wider">Phone Number</label>
                             <div className="relative">
                                 <Phone className="absolute left-3 top-3 w-5 h-5 text-muted-foreground/50" />
                                 <Input
@@ -81,7 +71,7 @@ export default function Login() {
                         </div>
 
                         <div className="space-y-2">
-                            <label className="text-sm font-bold text-muted-foreground uppercase tracking-wider">Password</label>
+                            <label className="text-sm font-bold text-foreground/80 uppercase tracking-wider">Password</label>
                             <div className="relative">
                                 <Lock className="absolute left-3 top-3 w-5 h-5 text-muted-foreground/50" />
                                 <Input
@@ -104,7 +94,7 @@ export default function Login() {
                         >
                             {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Login'}
                         </Button>
-                        <div className="text-center text-sm font-bold text-muted-foreground">
+                        <div className="text-center text-sm font-bold text-foreground/60">
                             Don't have an account? <Link to="/register" className="text-primary hover:underline">Register here</Link>
                         </div>
                     </CardFooter>
