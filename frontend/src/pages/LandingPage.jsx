@@ -133,8 +133,8 @@ export default function LandingPage() {
             </section>
 
             {/* Process Section */}
-            <section className="py-24 px-6 bg-muted/10 border-t border-border">
-                <div className="container mx-auto">
+            <section className="py-24 bg-muted/10 border-t border-border">
+                <div className="container mx-auto px-6">
                     <div className="text-center max-w-2xl mx-auto mb-20 space-y-4">
                         <h2 className="text-primary font-black uppercase tracking-[0.25em] text-sm">{t.processTitle}</h2>
                         <h3 className="text-4xl lg:text-5xl font-bold tracking-tight">{t.processSubtitle}</h3>
@@ -156,6 +156,90 @@ export default function LandingPage() {
                                     <p className="text-muted-foreground leading-relaxed text-base">{item.desc}</p>
                                 </div>
                             </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+            {/* About Section - Mission & Vision */}
+            <section id="about" className="relative py-32 overflow-hidden bg-background">
+                {/* Decorative Background Elements */}
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full -z-10 overflow-hidden pointer-events-none">
+                    <div className="absolute top-[10%] left-[5%] w-96 h-96 bg-primary/5 rounded-full blur-[120px]" />
+                    <div className="absolute bottom-[10%] right-[5%] w-[500px] h-[500px] bg-accent/5 rounded-full blur-[160px]" />
+                </div>
+
+                <div className="container mx-auto px-6">
+                    <div className="flex flex-col lg:flex-row items-center gap-20 lg:gap-32">
+                        {/* Image Side */}
+                        <div className="lg:w-5/12 relative group order-2 lg:order-1">
+                            <div className="relative z-10 rounded-[60px] overflow-hidden shadow-[0_32px_64px_-16px_rgba(0,0,0,0.2)] border border-border bg-card p-3 group-hover:scale-[1.01] transition-transform duration-700">
+                                <img
+                                    src="/hero_image.png"
+                                    alt="About Us"
+                                    className="w-full h-auto rounded-[50px] grayscale hover:grayscale-0 transition-all duration-1000 object-cover aspect-[4/5]"
+                                />
+                                {/* Overlay Gradient */}
+                                <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent pointer-events-none" />
+                            </div>
+
+                            {/* Accent Boxes */}
+                            <div className="absolute -top-10 -right-10 w-32 h-32 bg-primary/10 rounded-full blur-2xl -z-10 animate-pulse" />
+                            <div className="absolute -bottom-6 -left-6 w-48 h-48 border-2 border-primary/20 rounded-[40px] -z-10 translate-x-3 translate-y-3" />
+                        </div>
+
+                        {/* Content Side */}
+                        <div className="lg:w-7/12 space-y-12 order-1 lg:order-2">
+                            <div className="space-y-6">
+                                <Badge className="bg-primary/10 text-primary tracking-[0.2em] uppercase font-black px-6 py-2 border-none text-xs rounded-full">
+                                    {t.aboutTitle}
+                                </Badge>
+                                <h3 className="text-4xl lg:text-6xl font-black leading-[1.1] tracking-tight text-foreground">
+                                    {t.aboutSubtitle}
+                                </h3>
+                            </div>
+
+                            <div className="grid sm:grid-cols-1 gap-6">
+                                {t.aboutPoints.map((point, index) => (
+                                    <div
+                                        key={index}
+                                        className="group relative flex items-center gap-6 p-6 rounded-[32px] bg-card/50 backdrop-blur-sm border border-border hover:border-primary/30 hover:bg-card hover:shadow-xl hover:shadow-primary/5 transition-all duration-500 hover:-translate-y-1"
+                                    >
+                                        <div className="flex-shrink-0 w-16 h-16 rounded-2xl bg-primary/5 flex items-center justify-center group-hover:bg-primary transition-all duration-500 shadow-inner">
+                                            <CheckCircle2 className="w-8 h-8 text-primary group-hover:text-primary-foreground transition-colors duration-500" />
+                                        </div>
+                                        <div className="space-y-1">
+                                            <span className="text-lg lg:text-xl font-bold leading-snug text-foreground/90 group-hover:text-foreground transition-colors">
+                                                {point}
+                                            </span>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Contact Section */}
+            <section id="contact" className="py-24 bg-muted/20">
+                <div className="container mx-auto px-6">
+                    <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
+                        <Badge className="bg-primary/5 text-primary tracking-widest uppercase font-black px-6 py-2 border-none">{t.contactTitle}</Badge>
+                        <h3 className="text-4xl lg:text-5xl font-black">{t.contactSubtitle}</h3>
+                    </div>
+                    <div className="grid md:grid-cols-3 gap-8">
+                        {[
+                            { icon: MapPin, title: t.contactAddressLabel, content: "Bahir Dar, Ethiopia" },
+                            { icon: Phone, title: t.contactPhoneLabel, content: "+251 58 220 XXXX" },
+                            { icon: Mail, title: t.contactEmailLabel, content: "info@dms.gov.et" }
+                        ].map((item, i) => (
+                            <Card key={i} className="border-border hover:border-primary/50 transition-all duration-500 rounded-[32px] bg-card text-center p-8">
+                                <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-6">
+                                    <item.icon className="w-8 h-8 text-primary" />
+                                </div>
+                                <h4 className="text-xl font-bold mb-2">{item.title}</h4>
+                                <p className="text-muted-foreground">{item.content}</p>
+                            </Card>
                         ))}
                     </div>
                 </div>

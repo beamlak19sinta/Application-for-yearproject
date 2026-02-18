@@ -105,7 +105,7 @@ export default function PublicLayout() {
                 <div className="w-full bg-slate-950 text-white relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-[120px]" />
                     <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent/10 rounded-full blur-[120px]" />
-                    <div className="container mx-auto px-6 p-12 lg:p-20 relative z-10">
+                    <div className="container mx-auto px-6 py-12 lg:py-20 relative z-10">
                         <div className="grid lg:grid-cols-12 gap-16 lg:gap-24">
                             <div className="lg:col-span-5 space-y-8">
                                 <div className="flex items-center gap-3">
@@ -123,7 +123,7 @@ export default function PublicLayout() {
                             </div>
                             <div className="lg:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-12">
                                 <div className="space-y-6">
-                                    <h4 className="font-black uppercase text-xs tracking-widest text-primary">{lang === 'en' ? 'Quick Links' : 'አቋራጭ ሊንኮች'}</h4>
+                                    <h4 className="font-black uppercase text-xs tracking-widest text-neutral-200">{lang === 'en' ? 'Quick Links' : 'አቋራጭ ሊንኮች'}</h4>
                                     <ul className="space-y-4 text-sm font-semibold text-white/60">
                                         <li><a href="#" className="hover:text-primary transition-colors">{t.navServices}</a></li>
                                         <li><a href="#" className="hover:text-primary transition-colors">{t.navAbout}</a></li>
@@ -132,15 +132,15 @@ export default function PublicLayout() {
                                     </ul>
                                 </div>
                                 <div className="space-y-6">
-                                    <h4 className="font-black uppercase text-xs tracking-widest text-primary">{lang === 'en' ? 'Support' : 'እገዛ'}</h4>
+                                    <h4 className="font-black uppercase text-xs tracking-widest text-neutral-200">{lang === 'en' ? 'Support' : 'እገዛ'}</h4>
                                     <ul className="space-y-4 text-sm font-semibold text-white/60">
-                                        <li className="flex items-start gap-3"><Phone className="w-4 h-4 text-primary shrink-0" /> +251 58 220 XXXX</li>
-                                        <li className="flex items-start gap-3"><Mail className="w-4 h-4 text-primary shrink-0" /> info@dms.gov.et</li>
-                                        <li className="flex items-start gap-3"><MapPin className="w-4 h-4 text-primary shrink-0" /> Bahir Dar, Ethiopia</li>
+                                        <li className="flex items-start gap-3"><Phone className="w-4 h-4 text-neutral-200 shrink-0" /> +251 58 220 XXXX</li>
+                                        <li className="flex items-start gap-3"><Mail className="w-4 h-4 text-neutral-200 shrink-0" /> info@dms.gov.et</li>
+                                        <li className="flex items-start gap-3"><MapPin className="w-4 h-4 text-neutral-200 shrink-0" /> Bahir Dar, Ethiopia</li>
                                     </ul>
                                 </div>
                                 <div className="space-y-6 col-span-2 sm:col-span-1">
-                                    <h4 className="font-black uppercase text-xs tracking-widest text-primary">{lang === 'en' ? 'Office Hours' : 'የስራ ሰዓት'}</h4>
+                                    <h4 className="font-black uppercase text-xs tracking-widest text-neutral-200">{lang === 'en' ? 'Office Hours' : 'የስራ ሰዓት'}</h4>
                                     <div className="p-6 bg-white/5 rounded-2xl border border-white/10 space-y-3">
                                         <div>
                                             <div className="text-[10px] font-bold text-white/40 uppercase mb-1">{lang === 'en' ? 'Weekdays' : 'የስራ ቀናት'}</div>
