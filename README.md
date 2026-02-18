@@ -1,89 +1,50 @@
-# Dagmawi Menelik Digital Service Management System
+# Dagmawi Menelik Digital Service - Quick Start Guide
 
-A modern, high-performance digital platform designed to streamline citizen services, manage real-time queues, and coordinate appointments.
+This project is a management system for digital services. Follow these simple steps to get it running.
 
-## 🚀 Features
-- **Citizen Portal**: Browse services, grab queue tickets, and book appointments.
-- **Officer Dashboard**: Real-time queue monitoring with "Call Next" functionality.
-- **Admin Panel**: Manage service sectors and system users.
-- **Multi-language**: Seamless switching between English and Amharic.
-- **Modern UI**: Built with React, Tailwind CSS v4, and Shadcn components.
+## 🛠️ Easy Setup
 
----
+1. **Open your terminal**.
+2. **Navigate to the project folder**.
+3. **Run the setup script**:
+   ```bash
+   chmod +x setup.sh
+   ./setup.sh
+   ```
+   *(Wait for it to finish. It will install everything and set up the database for you.)*
 
-## 🛠️ Tech Stack
-- **Frontend**: React (Vite), Tailwind CSS v4, Lucide React, Framer Motion.
-- **Backend**: Node.js, Express, Prisma (v7).
-- **Database**: PostgreSQL.
+## 🚀 How to Run
 
----
+To start the project, you need to run both the **Backend** and the **Frontend**.
 
-## 🏃 Getting Started
-
-### Prerequisites
-- **Node.js** (v20 or higher)
-- **PostgreSQL** (Active Service)
-
-### 1. Database Setup
-First, create the database on your local PostgreSQL server:
-```bash
-# Enter psql
-sudo -u postgres psql
-
-# Create database and user
-CREATE DATABASE dagmawi_db;
-CREATE USER hab WITH PASSWORD 'dagmawi_pass';
-ALTER DATABASE dagmawi_db OWNER TO hab;
-ALTER USER hab WITH SUPERUSER;
-\q
-```
-
-### 2. Backend Configuration
-Navigate to the `backend` directory and install dependencies:
-```bash
-cd backend
-npm install
-```
-
-Create a `.env` file in the `backend` folder:
-```env
-DATABASE_URL="postgresql://hab:dagmawi_pass@localhost:5432/dagmawi_db"
-JWT_SECRET="your_secure_secret_here"
-PORT=5000
-```
-
-Initialize the database (Migrations & Seeding):
-```bash
-npx prisma migrate dev --name init
-npx prisma db seed
-```
-
-Start the development server:
+### 1. Start the Backend (Server)
+Open a new terminal in the `backend` folder and run:
 ```bash
 npm run dev
 ```
 
-### 3. Frontend Configuration
-Navigate to the `frontend` directory and install dependencies:
-```bash
-cd frontend
-npm install
-```
-
-Start the Vite development server:
+### 2. Start the Frontend (Website)
+Open another terminal in the `frontend` folder and run:
 ```bash
 npm run dev
 ```
 
+The website will be available at: **http://localhost:5173**
+
 ---
 
-## 💡 Technical Notes (Prisma 7)
-This project uses **Prisma v7**, which requires specific configurations for stability on Linux:
-- **Driver Adapter**: Uses `@prisma/adapter-pg` to ensure robust connections.
-- **Stable Initialization**: The client utilizes a custom utility (`src/utils/prisma.js`) for reliable environment synchronization.
+## 🔐 Login Credentials
 
-## 📄 License
-MIT License - Created for the Dagmawi Menelik Digital Service initiative.
-Admin: 0911111111 / admin123
-Officer: 0900000000 / officer1234
-Citizen: 0909090909 / password1234
+Use these accounts to test the system:
+
+| Role | Phone Number | Password |
+|------|--------------|----------|
+| **Admin** | `0911111111` | `admin123` |
+| **Officer** | `0900000000` | `officer123` |
+| **Citizen** | `0909090909` | `password123` |
+
+---
+
+## 📝 Important Notes
+- Make sure **PostgreSQL** is running on your computer.
+- If you have issues, try running the `./setup.sh` script again.
